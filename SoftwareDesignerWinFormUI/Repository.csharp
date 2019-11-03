@@ -1,0 +1,17 @@
+﻿namespace Repository
+{
+    public interface I{RepositoryName}Repository: System.IDisposable, System.Collections.Generic.IEnumerable<o{RepositoryName}Info>
+    {
+
+     // code
+        
+    }
+  
+}
+
+
+  void Clear();
+
+        bool Add(IResultMsg ResultMsg, oNew{RepositoryName} oNew);
+        
+        void Load(o{RepositoryName}Filter} oFilter);

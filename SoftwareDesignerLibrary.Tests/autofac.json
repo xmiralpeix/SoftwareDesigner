@@ -1,0 +1,40 @@
+{
+  "defaultAssembly": "SoftwareDesignerLibrary",
+  "components": [
+    {
+      "type": "SoftwareDesignerLibrary.ClassBuilder, SoftwareDesignerLibrary",
+      "services": [
+        {
+          "type": "SoftwareDesignerLibrary.Definitions.IClassBuilder"
+        },
+        {
+          "type": "SoftwareDesignerLibrary.Definitions.IFileBuilder"
+        }
+      ],
+      "autoActivate": true,
+      "injectProperties": true
+    },
+    {
+      "type": "SoftwareDesignerLibrary.InterfaceBuilder, SoftwareDesignerLibrary",
+      "services": [
+        {
+          "type": "SoftwareDesignerLibrary.Definitions.IInterfaceBuilder"
+        },
+        {
+          "type": "SoftwareDesignerLibrary.Definitions.IFileBuilder"
+        }
+      ],
+      "autoActivate": true,
+      "injectProperties": true
+    },
+    {
+      "type": "SoftwareDesignerLibrary.CSharpCodeBuilder, SoftwareDesignerLibrary",
+      "services": [
+        {
+          "type": "SoftwareDesignerLibrary.Definitions.ICodeBuilder",
+          "name": "cSharp"
+        }
+      ]
+    }
+  ]
+}
