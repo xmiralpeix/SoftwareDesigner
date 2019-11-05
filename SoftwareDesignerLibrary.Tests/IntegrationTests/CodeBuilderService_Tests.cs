@@ -34,7 +34,7 @@ namespace SoftwareDesignerLibrary.Tests.IntegrationTests
             oClassInfo.AddProperties(inputProperties);
             oClassInfo.AddMethods(inputMethods);
 
-            string[] files = Services.CodeBuilderService.GenerateFiles("cSharp", new ClassInfo[] { oClassInfo }, null);
+            string[] files = Services.CodeBuilderService.GenerateFiles("CSharp", new ClassInfo[] { oClassInfo }, null);
 
             string actualFile = files.First();
             string actualString = System.IO.File.ReadAllText(actualFile);
@@ -71,7 +71,7 @@ namespace SoftwareDesignerLibrary.Tests.IntegrationTests
             oInterfaceInfo.AddProperties(inputProperties);
             oInterfaceInfo.AddMethods(inputMethods);
 
-            string[] files = Services.CodeBuilderService.GenerateFiles("cSharp", null, new InterfaceInfo[] { oInterfaceInfo });
+            string[] files = Services.CodeBuilderService.GenerateFiles("CSharp", null, new InterfaceInfo[] { oInterfaceInfo });
 
             string actualFile = files.First();
             string actualString = System.IO.File.ReadAllText(actualFile);

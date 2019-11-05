@@ -5,6 +5,7 @@
 
         System.Text.StringBuilder Code { get; set; }
         void AppendConstructor(string ClassName);
+        void AppendPropertyDefinitions(PropertyInfo[] Collection);
         void AppendProperties(PropertyInfo[] Collection);
         void AppendMethods(MethodInfo[] Collection);
         void BeginClass(string className);

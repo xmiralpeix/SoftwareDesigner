@@ -32,7 +32,16 @@
       "services": [
         {
           "type": "SoftwareDesignerLibrary.Definitions.ICodeBuilder",
-          "name": "cSharp"
+          "name": "CSharp"
+        }
+      ]
+    },
+    {
+      "type": "SoftwareDesignerLibrary.VbNetCodeBuilder, SoftwareDesignerLibrary",
+      "services": [
+        {
+          "type": "SoftwareDesignerLibrary.Definitions.ICodeBuilder",
+          "name": "VbNet"
         }
       ]
     }

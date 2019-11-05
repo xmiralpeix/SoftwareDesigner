@@ -35,7 +35,7 @@ namespace SoftwareDesignerLibrary
             _codeBuilder.BeginInterface(oInterfaceInfo.InterfaceName);
 
             if (oInterfaceInfo.PropertyCollection != null)
-                _codeBuilder.AppendProperties( oInterfaceInfo.PropertyCollection.ToArray());
+                _codeBuilder.AppendPropertyDefinitions( oInterfaceInfo.PropertyCollection.ToArray());
 
             if (oInterfaceInfo.MethodCollection != null)
                 _codeBuilder.AppendMethodDefinitions(oInterfaceInfo.MethodCollection.ToArray());

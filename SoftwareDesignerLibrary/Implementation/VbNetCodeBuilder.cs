@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace SoftwareDesignerLibrary
 {
-    public class CSharpCodeBuilder : Definitions.ICodeBuilder
+    public class VbNetCodeBuilder : Definitions.ICodeBuilder
     {
         
 
         public StringBuilder Code { get; set; }
 
-        public CSharpCodeBuilder()
+        public VbNetCodeBuilder()
         {
             Code = new StringBuilder();
         }
@@ -23,11 +23,11 @@ namespace SoftwareDesignerLibrary
             if (collection == null)
                 return;
 
-            // ex: string[] property001 { get; set; } 
+            // ex: Property NewProperty() As String()
             foreach (var pInfo in collection)
-                Code.AppendFormat("{0}{1} {2} {{ get; set; }}",
+                Code.AppendFormat("Property {2}() As {0}{1}",
                     CleanType(pInfo.PropertyType),
-                    pInfo.IsArray ? "[]" : "",
+                    pInfo.IsArray ? "()" : "",
                     pInfo.PropertyName).AppendLine();
 
         }
@@ -38,19 +38,21 @@ namespace SoftwareDesignerLibrary
             if (collection == null)
                 return;
 
-            // ex: public string[] property001 { get; set; } 
+            // ex: Public Property NewProperty() As String()
             foreach (var pInfo in collection)
-                Code.AppendFormat("public {0}{1} {2} {{ get; set; }}",
+                Code.AppendFormat("Public Property {2}() As {0}{1}",
                     CleanType(pInfo.PropertyType),
-                    pInfo.IsArray ? "[]" : "",
+                    pInfo.IsArray ? "()" : "",
                     pInfo.PropertyName).AppendLine();
 
         }
 
-
+       
         public void AppendConstructor(string className)
         {
-            Code.AppendFormat("public {0}() {{ }}", className).AppendLine();
+            // ex: Public Sub New()
+            //     End Sub
+            Code.AppendLine("Public Sub New()").AppendLine("End Sub");
         }
 
         public void BeginNamespace(string xNamespace)
@@ -58,7 +60,8 @@ namespace SoftwareDesignerLibrary
             if (string.IsNullOrWhiteSpace(xNamespace))
                 return;
 
-            Code.AppendFormat("Namespace {0} {{", xNamespace).AppendLine();
+            // ex: Namespace NewNamespace
+            Code.AppendFormat("Namespace {0}", xNamespace).AppendLine();
         }
 
         public void EndNamespace(string xNamespace)
@@ -66,7 +69,8 @@ namespace SoftwareDesignerLibrary
             if (string.IsNullOrWhiteSpace(xNamespace))
                 return;
 
-            Code.AppendLine("}");
+            // ex: End Namespace
+            Code.AppendLine("End Namespace");
         }
  
 
@@ -75,7 +79,8 @@ namespace SoftwareDesignerLibrary
             if (string.IsNullOrWhiteSpace(className))
                 return;
 
-            Code.AppendFormat("public class {0} {{", className).AppendLine();
+            // ex: Public Class Class1
+            Code.AppendFormat("Public Class {0}", className).AppendLine();
 
         }
         public void EndClass(string className)
@@ -83,7 +88,8 @@ namespace SoftwareDesignerLibrary
             if (string.IsNullOrWhiteSpace(className))
                 return;
 
-            Code.AppendLine("}");
+            // ex: End Class
+            Code.AppendLine("End Class");
         }
 
         public void BeginInterface(string InterfaceName)
@@ -91,7 +97,8 @@ namespace SoftwareDesignerLibrary
             if (string.IsNullOrWhiteSpace(InterfaceName))
                 return;
 
-            Code.AppendFormat("public interface {0} {{", InterfaceName).AppendLine();
+            // ex: Public Interface IClass1
+            Code.AppendFormat("Public Interface  {0} ", InterfaceName).AppendLine();
         }
 
         public void EndInterface(string InterfaceName)
@@ -99,12 +106,13 @@ namespace SoftwareDesignerLibrary
             if (string.IsNullOrWhiteSpace(InterfaceName))
                 return;
 
-            Code.AppendLine("}");
+            // ex: End Interface
+            Code.AppendLine("End Interface");
         }
 
         public string GetFileExtension()
         {
-            return ".cs";
+            return ".vb";
         }
 
         public void AppendMethodDefinitions(MethodInfo[] collection)
@@ -135,14 +143,13 @@ namespace SoftwareDesignerLibrary
 
             string retType = originalType.Trim();
             string evalType = originalType.ToUpper();
-            if (new string[] { "STRING" }.Contains(evalType)) return "string";
-            if (new string[] { "BOOL", "BOOLEAN" }.Contains(evalType)) return "bool";
-            if (new string[] { "INT", "INTEGER" }.Contains(evalType)) return "int";
-            if (new string[] { "DECIMAL" }.Contains(evalType)) return "decimal";
-            if (new string[] { "DOUBLE" }.Contains(evalType)) return "double";
+            if (new string[] { "STRING" }.Contains(evalType)) return "String";
+            if (new string[] { "BOOL", "BOOLEAN" }.Contains(evalType)) return "Boolean";
+            if (new string[] { "INT", "INTEGER" }.Contains(evalType)) return "Integer";
+            if (new string[] { "DECIMAL" }.Contains(evalType)) return "Decimal";
+            if (new string[] { "DOUBLE" }.Contains(evalType)) return "Double";
             if (new string[] { "DATETIME" }.Contains(evalType)) return "DateTime";
-
-
+            
             return retType;
         }
 
@@ -156,9 +163,10 @@ namespace SoftwareDesignerLibrary
             foreach (ParamInfo paramInfo in collection)
             {
                 string sType = CleanType(paramInfo.ParamType);
-                string sArray = paramInfo.IsArray ? "[]" : "";
+                string sArray = paramInfo.IsArray ? "()" : "";
 
-                sParams.Add($"{sType}{sArray} {paramInfo.ParamName}");
+                // ByVal oValue As String()
+                sParams.Add($"ByVal {paramInfo.ParamName} {sType}{sArray}");
             }
 
             return string.Join(", ", sParams.ToArray());
@@ -173,8 +181,9 @@ namespace SoftwareDesignerLibrary
 
             foreach (var subInfo in collection)
             {
+                // ex:  Sub NewSub(ByVal sValue1 As String(), ByVal sValue2 As String())
                 string parameters = BuildParameters(subInfo.Parameters);
-                Code.AppendFormat("void {0}({1});", 
+                Code.AppendFormat("Sub {0}({1})", 
                     subInfo.MethodName, 
                     parameters).AppendLine();
             }
@@ -190,11 +199,13 @@ namespace SoftwareDesignerLibrary
 
             foreach (var subInfo in collection)
             {
+                // ex:  Public Sub NewSub(ByVal sValue1 As String(), ByVal sValue2 As String())
+                //          Throw New NotImplementedException()
+                //      End Sub
                 string parameters = BuildParameters(subInfo.Parameters);
-
-                Code.AppendFormat("public void {0}({1}) {{ Throw new NotImplementedException(); }}",
-                    subInfo.MethodName, 
-                    parameters).AppendLine();
+                Code.AppendFormat("Public Sub {0}({1})",subInfo.MethodName, parameters)
+                    .AppendLine("Throw New NotImplementedException()")
+                    .AppendLine("End Sub");
             }
 
 
@@ -208,15 +219,14 @@ namespace SoftwareDesignerLibrary
 
             foreach (var funcInfo in collection)
             {
+                // ex: Public Function NewFunction(ByVal sValue1 As String(), ByVal sValue2 As String()) As String()
+                //      Throw New NotImplementedException()
+                //     End Function
                 string parameters = BuildParameters(funcInfo.Parameters);
-
-                Code.AppendFormat("public {0}{1} {2}({3}) {{ Throw new NotImplementedException(); }}",
-                    CleanType(funcInfo.ReturnType),
-                    funcInfo.ReturnTypeIsArray ? "[]" : "",
-                    funcInfo.MethodName,
-                    parameters).AppendLine();
+                Code.AppendFormat("Public Function {2}({3}) As {0}{1}",CleanType(funcInfo.ReturnType),funcInfo.ReturnTypeIsArray ? "[]" : "",funcInfo.MethodName,parameters)
+                    .AppendLine("Throw New NotImplementedException()")
+                    .AppendLine("End Function");
             }
-
 
         }
 
@@ -228,9 +238,9 @@ namespace SoftwareDesignerLibrary
 
             foreach (var funcInfo in collection)
             {
+                // ex: Function NewFunction(ByVal sValue1 As String(), ByVal sValue2 As String()) As String()
                 string parameters = BuildParameters(funcInfo.Parameters);
-
-                Code.AppendFormat("{0}{1} {2}({3});",
+                Code.AppendFormat("Function {2}({3}) As {0}{1}",
                     CleanType(funcInfo.ReturnType),
                     funcInfo.ReturnTypeIsArray ? "[]" : "",
                     funcInfo.MethodName,

@@ -101,6 +101,7 @@
   <ItemGroup>
     <Compile Include="DataInfo\ParamInfo.cs" />
     <Compile Include="DataInfo\MethodInfo.cs" />
+    <Compile Include="Implementation\VbNetCodeBuilder.cs" />
     <Compile Include="Implementation\InterfaceBuilder.cs" />
     <Compile Include="DataInfo\ClassInfo.cs" />
     <Compile Include="DataInfo\InterfaceInfo.cs" />

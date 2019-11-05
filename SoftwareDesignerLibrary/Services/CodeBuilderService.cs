@@ -17,7 +17,7 @@ namespace SoftwareDesignerLibrary.Services
             List<string> resultFiles = new List<string>();
 
             if (string.IsNullOrWhiteSpace(codeName))
-                codeName = "cSharp";
+                codeName = "CSharp";
                          
             using (var scope = Engine.DIContainer.BeginLifetimeScope(codeName)) {
 

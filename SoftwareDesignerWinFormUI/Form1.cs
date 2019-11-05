@@ -263,7 +263,7 @@ namespace Project1
             
             AddRepositoryInterface(interfaceCollection);
 
-            string[] codeFiles = CodeBuilderService.GenerateFiles("cSharp", classCollection.ToArray(), interfaceCollection.ToArray());
+            string[] codeFiles = CodeBuilderService.GenerateFiles("CSharp", classCollection.ToArray(), interfaceCollection.ToArray());
 
         }
 
