@@ -10,6 +10,7 @@ namespace SoftwareDesignerLibrary
     {
         public string Namespace { get; set; }
         public string InterfaceName { get; set; }
+        public string[] ImplementedTypes { get; set; }
 
         internal List<PropertyInfo> PropertyCollection = new List<PropertyInfo>();
         internal List<MethodInfo> MethodCollection = new List<MethodInfo>();

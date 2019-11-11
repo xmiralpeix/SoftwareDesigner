@@ -263,7 +263,7 @@ namespace Project1
             
             AddRepositoryInterface(interfaceCollection);
 
-            string[] codeFiles = CodeBuilderService.GenerateFiles("CSharp", classCollection.ToArray(), interfaceCollection.ToArray());
+            string[] codeFiles = CodeBuilderService.GenerateFiles("VbNet", classCollection.ToArray(), interfaceCollection.ToArray());
 
         }
 
@@ -274,18 +274,10 @@ namespace Project1
                 return;
 
             InterfaceInfo oInterfaceInfo = new InterfaceInfo();
-            string[] interfaceParts = this.lblRepository.Text.Split(new string[] { "." }, StringSplitOptions.RemoveEmptyEntries);
-            if (interfaceParts.Length == 2)
-            {
-                oInterfaceInfo.Namespace = interfaceParts[0];
-                oInterfaceInfo.InterfaceName = interfaceParts[1];
-            }
-            else
-            {
-                oInterfaceInfo.InterfaceName = interfaceParts[0];
-            }
-            if (!oInterfaceInfo.InterfaceName.StartsWith("I"))
-                oInterfaceInfo.InterfaceName = "I" + oInterfaceInfo.InterfaceName;
+            
+            oInterfaceInfo.Namespace = "Repository";
+            oInterfaceInfo.InterfaceName = "I" + this.lblRepository.Text;
+            oInterfaceInfo.ImplementedTypes = new string[] { "IDisposable", $"IEnumerable({this.txtRepositoryName.Text}Info)" };
 
             if (RepositoryMethods != null)
                 oInterfaceInfo.AddMethods((from DataRow oRow in RepositoryMethods.Rows 

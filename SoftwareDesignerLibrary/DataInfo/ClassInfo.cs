@@ -11,6 +11,7 @@ namespace SoftwareDesignerLibrary
         public string Namespace { get; set; }
 
         public string ClassName { get; set; }
+        
 
         internal List<PropertyInfo> PropertyCollection = new List<PropertyInfo>();
         internal List<MethodInfo> MethodCollection = new List<MethodInfo>();       

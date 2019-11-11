@@ -92,13 +92,40 @@ namespace SoftwareDesignerLibrary
             Code.AppendLine("End Class");
         }
 
-        public void BeginInterface(string InterfaceName)
+        public void BeginInterface(string InterfaceName, string[] ImplementedTypeNames)
         {
             if (string.IsNullOrWhiteSpace(InterfaceName))
                 return;
 
             // ex: Public Interface IClass1
-            Code.AppendFormat("Public Interface  {0} ", InterfaceName).AppendLine();
+            Code.AppendFormat("Public Interface {0} ", InterfaceName).AppendLine();
+
+            if (ImplementedTypeNames != null && ImplementedTypeNames.Length > 0)
+            {
+                     
+                var implTypes = from sTypeName in ImplementedTypeNames
+                                select BuildImplementedParams(sTypeName);
+
+                 // ex: Inherits IDisposable, IEnumerable(Of ItemInfo)))
+                Code.AppendFormat("Inherits {0}", string.Join(", ", implTypes.ToArray())).AppendLine();
+            }
+        }
+
+        private string BuildImplementedParams(string ImplementedTypeName) {           
+
+            // ex: IDisposable
+            if (!ImplementedTypeName.Contains("("))
+                return ImplementedTypeName;
+
+            // ex: ICollection(string, integer) --> ICollection(Of String, Integer)
+            string[] defParts = ImplementedTypeName.Split(new string[] { "(", ")" }, StringSplitOptions.None);
+            string sRet = defParts[0] + "(Of "; // ICollection(Of                        
+            string[] paramTypes = defParts[1].Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries); // [string, integer]
+            
+            sRet += string.Join(", ", paramTypes) + ")";// ICollection(Of string, integer)
+
+            return sRet;
+
         }
 
         public void EndInterface(string InterfaceName)
@@ -109,6 +136,8 @@ namespace SoftwareDesignerLibrary
             // ex: End Interface
             Code.AppendLine("End Interface");
         }
+
+       
 
         public string GetFileExtension()
         {
@@ -250,6 +279,6 @@ namespace SoftwareDesignerLibrary
 
         }
 
-
+      
     }
 }

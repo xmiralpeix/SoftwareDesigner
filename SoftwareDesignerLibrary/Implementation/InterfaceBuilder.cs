@@ -32,7 +32,9 @@ namespace SoftwareDesignerLibrary
             
             _codeBuilder.BeginNamespace(oInterfaceInfo.Namespace);
 
-            _codeBuilder.BeginInterface(oInterfaceInfo.InterfaceName);
+            _codeBuilder.BeginInterface(
+                oInterfaceInfo.InterfaceName, 
+                oInterfaceInfo.ImplementedTypes);         
 
             if (oInterfaceInfo.PropertyCollection != null)
                 _codeBuilder.AppendPropertyDefinitions( oInterfaceInfo.PropertyCollection.ToArray());

@@ -84,14 +84,42 @@ namespace SoftwareDesignerLibrary
                 return;
 
             Code.AppendLine("}");
-        }
+        }    
 
-        public void BeginInterface(string InterfaceName)
+
+        public void BeginInterface(string InterfaceName, string[] ImplementedTypeNames)
         {
             if (string.IsNullOrWhiteSpace(InterfaceName))
                 return;
 
-            Code.AppendFormat("public interface {0} {{", InterfaceName).AppendLine();
+            string impTypesCode = "";
+            if (ImplementedTypeNames != null && ImplementedTypeNames.Length > 0)
+            {
+                var implTypes = from sTypeName in ImplementedTypeNames
+                               select BuildImplementedParams(sTypeName);
+
+                impTypesCode = ": " + string.Join(", ", implTypes.ToArray());
+            }
+
+            Code.AppendFormat("public interface {0} {1} {{", InterfaceName, impTypesCode).AppendLine();
+        }
+
+        private string BuildImplementedParams(string ImplementedTypeName)
+        {
+
+            // ex: IDisposable
+            if (!ImplementedTypeName.Contains("("))
+                return ImplementedTypeName;
+
+            // ex: ICollection(string, integer) --> ICollection(Of String, Integer)
+            string[] defParts = ImplementedTypeName.Split(new string[] { "(", ")" }, StringSplitOptions.None);
+            string sRet = defParts[0] + "< "; // ICollection(Of                        
+            string[] paramTypes = defParts[1].Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries); // [string, integer]
+
+            sRet += string.Join(", ", paramTypes) + ">";// ICollection(Of string, integer)
+
+            return sRet;
+
         }
 
         public void EndInterface(string InterfaceName)

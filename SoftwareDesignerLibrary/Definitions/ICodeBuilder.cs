@@ -1,6 +1,6 @@
 ﻿namespace SoftwareDesignerLibrary.Definitions
 {
-    public interface ICodeBuilder
+    public interface ICodeBuilder        
     {
 
         System.Text.StringBuilder Code { get; set; }
@@ -10,11 +10,12 @@
         void AppendMethods(MethodInfo[] Collection);
         void BeginClass(string className);
         void EndClass(string ClassName);
-        void BeginInterface(string InterfaceName);
+        void BeginInterface(string InterfaceName, string[] ImplementedTypeNames);      
         void EndInterface(string InterfaceName);
         void BeginNamespace(string xNamespace);
         void EndNamespace(string xNamespace);
         string GetFileExtension();
         void AppendMethodDefinitions(MethodInfo[] methodInfo);
+  
     }
 }
